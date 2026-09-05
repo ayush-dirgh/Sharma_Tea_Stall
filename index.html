@@ -5,11 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>शर्मा टी स्टॉल | Highway Radio</title>
 
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#ffb703">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Yatra+One&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#ffb703">
+
   <style>
     :root {
       --amber-gold: #ffb703;
@@ -100,7 +102,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 16px 24px;
+      padding: 14px 20px;
       z-index: 20;
     }
 
@@ -140,67 +142,48 @@
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      border-radius: 99px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 6px 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(10px);
+      text-decoration: none;
+      color: #fff;
+      transition: transform 0.15s ease, filter 0.2s ease;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .action-btn:active { transform: scale(0.92); }
+
+    .playlist-toggle-btn {
+      background: linear-gradient(135deg, rgba(255, 183, 3, 0.35), rgba(211, 84, 0, 0.5));
+      border: 1px solid var(--amber-gold);
+      box-shadow: 0 0 12px rgba(255, 183, 3, 0.3);
     }
 
     .marwadi-voice-btn {
-      background: linear-gradient(135deg, rgba(230, 126, 34, 0.6), rgba(211, 84, 0, 0.45));
-      border: 1px solid var(--amber-gold);
-      color: #fff;
-      padding: 6px 14px;
-      border-radius: 99px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 0 12px rgba(255, 183, 3, 0.35);
-      transition: all 0.2s;
+      background: linear-gradient(135deg, rgba(230, 126, 34, 0.5), rgba(211, 84, 0, 0.4));
+      border-color: #f39c12;
     }
 
     .truck-horn-btn {
-      background: linear-gradient(135deg, rgba(255, 111, 0, 0.75), rgba(216, 67, 21, 0.6));
+      background: linear-gradient(135deg, rgba(255, 111, 0, 0.8), rgba(216, 67, 21, 0.65));
       border: 1px solid #ffb300;
-      color: #fff;
-      padding: 6px 14px;
-      border-radius: 99px;
-      font-size: 0.78rem;
-      font-weight: 800;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      backdrop-filter: blur(10px);
       box-shadow: 0 0 14px rgba(255, 111, 0, 0.45);
-      transition: all 0.15s;
     }
-    .truck-horn-btn:active { transform: scale(0.92); }
 
     .linkedin-btn {
-      background: linear-gradient(135deg, rgba(0, 119, 181, 0.8), rgba(0, 85, 130, 0.75));
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      color: #fff;
-      padding: 6px 14px;
-      border-radius: 99px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 0 14px rgba(0, 119, 181, 0.45);
-      transition: all 0.2s ease;
-      cursor: pointer;
+      background: linear-gradient(135deg, rgba(0, 119, 181, 0.8), rgba(0, 85, 130, 0.7));
+      border-color: rgba(255, 255, 255, 0.3);
     }
-    .linkedin-btn:hover {
-      background: linear-gradient(135deg, rgba(0, 140, 210, 0.95), rgba(0, 100, 150, 0.85));
-      box-shadow: 0 0 18px rgba(0, 140, 210, 0.65);
-      transform: translateY(-1px);
-    }
-    .linkedin-btn:active { transform: scale(0.94); }
 
     .linkedin-icon {
       width: 14px;
@@ -247,7 +230,6 @@
       transform: perspective(600px) rotateX(4deg);
       display: inline-block;
       filter: drop-shadow(0 15px 25px rgba(0,0,0,0.85));
-      transition: transform 0.2s ease;
       animation: stallFloat 3.5s ease-in-out infinite alternate;
     }
 
@@ -290,9 +272,7 @@
       transition: color 0.3s;
     }
 
-    body.playing .sub-tagline {
-      color: var(--amber-gold);
-    }
+    body.playing .sub-tagline { color: var(--amber-gold); }
 
     footer {
       padding: 0 16px 18px 16px;
@@ -338,11 +318,7 @@
 
     @keyframes spinTrack { 100% { transform: rotate(360deg); } }
 
-    .track-details { 
-      flex: 1; 
-      text-align: left; 
-      min-width: 0; 
-    }
+    .track-details { flex: 1; text-align: left; min-width: 0; }
 
     .track-title {
       font-size: 0.95rem;
@@ -375,7 +351,6 @@
       background: rgba(255, 255, 255, 0.2);
       border-radius: 99px;
       cursor: pointer;
-      position: relative;
     }
 
     .line-fill {
@@ -394,11 +369,7 @@
       font-variant-numeric: tabular-nums;
     }
 
-    .controls { 
-      display: flex; 
-      align-items: center; 
-      gap: 12px; 
-    }
+    .controls { display: flex; align-items: center; gap: 12px; }
 
     .btn-icon {
       background: none;
@@ -431,29 +402,125 @@
     .btn-play:hover { background: var(--amber-gold); }
     .btn-play:active { transform: scale(0.92); }
 
-    .vol-box { 
-      display: flex; 
-      align-items: center; 
-      gap: 6px; 
-    }
-    .vol-slider { 
-      width: 60px; 
-      accent-color: var(--amber-gold); 
-      cursor: pointer; 
+    .vol-box { display: flex; align-items: center; gap: 6px; }
+    .vol-slider { width: 60px; accent-color: var(--amber-gold); cursor: pointer; }
+
+    /* Sliding Drawer Styles */
+    .playlist-drawer {
+      position: fixed;
+      top: 0;
+      right: -380px;
+      width: min(360px, 86vw);
+      height: 100vh;
+      background: rgba(14, 6, 3, 0.97);
+      backdrop-filter: blur(25px);
+      border-left: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: -15px 0 40px rgba(0, 0, 0, 0.9);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .footer-note { 
-      font-size: 0.72rem; 
-      color: rgba(255, 255, 255, 0.45); 
+    .playlist-drawer.open { right: 0; }
+
+    .drawer-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
+
+    .drawer-header h3 {
+      font-size: 1.05rem;
+      color: var(--amber-gold);
+      font-weight: 800;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: #dfcebe;
+      font-size: 1.4rem;
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+
+    .song-list-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .song-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      border: 1px solid transparent;
+    }
+
+    .song-item:hover {
+      background: rgba(255, 183, 3, 0.15);
+    }
+
+    .song-item.active {
+      background: rgba(255, 183, 3, 0.22);
+      border-color: var(--amber-gold);
+    }
+
+    .song-item-idx {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--amber-gold);
+      min-width: 24px;
+    }
+
+    .song-item-meta { flex: 1; min-width: 0; text-align: left; }
+
+    .song-item-name {
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .song-item-sub {
+      font-size: 0.72rem;
+      color: #cbb9a9;
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 90;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .drawer-overlay.active { opacity: 1; pointer-events: auto; }
 
     @media (max-width: 768px) {
-      header { padding: 12px 16px; }
-      main { margin-top: -20px; }
+      header { padding: 10px 14px; }
+      main { margin-top: -15px; }
       .vol-box { display: none; }
-      .footer-note { display: none; }
-      .player-dock { padding: 10px 16px; }
-      .marwadi-voice-btn, .truck-horn-btn, .linkedin-btn { font-size: 0.7rem; padding: 5px 10px; }
+      .player-dock { padding: 10px 14px; }
+      .action-btn { font-size: 0.7rem; padding: 5px 10px; }
     }
   </style>
 </head>
@@ -470,22 +537,25 @@
         <div class="time-lbl" id="live-clock">12:00 PM</div>
         <div class="online-tag">
           <div class="pulse"></div>
-          <span id="station-status">100% Ad-Free Highway Radio</span>
+          <span id="station-status">Highway Radio</span>
         </div>
       </div>
 
       <div class="header-actions">
-        <button class="marwadi-voice-btn" onclick="speakRamRamSa()" title="राम राम सा सुनो">
+        <button class="action-btn playlist-toggle-btn" onclick="toggleDrawer()" title="Poori Gaano Ki List Dekhein">
+          🎵 Playlist
+        </button>
+        <button class="action-btn marwadi-voice-btn" onclick="speakRamRamSa()" title="राम राम सा सुनो">
           🙏 राम राम सा
         </button>
-        <button class="truck-horn-btn" onclick="blowTruckHorn()" title="ट्रक हॉर्न बजाओ">
-          🎺 ट्रक हॉर्न
+        <button class="action-btn truck-horn-btn" onclick="blowTruckHorn()" title="देसी नागिन हॉर्न बजाओ">
+          🎺 नागिन हॉर्न
         </button>
-        <a href="https://www.linkedin.com/in/ayush-jain-644263353" target="_blank" rel="noopener noreferrer" class="linkedin-btn" title="Follow Ayush on LinkedIn">
+        <a href="https://www.linkedin.com/in/ayush-jain-644263353" target="_blank" rel="noopener noreferrer" class="action-btn linkedin-btn" title="Follow on LinkedIn">
           <svg class="linkedin-icon" viewBox="0 0 24 24">
             <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.64c-.9 0-1.63.73-1.63 1.63s.73 1.63 1.63 1.63 1.63-.73 1.63-1.63-.73-1.63-1.63-1.63Z"/>
           </svg>
-          Follow Me In Linkedin
+          Follow
         </a>
       </div>
     </header>
@@ -494,7 +564,7 @@
       <div class="stall-wrapper">
         <h1 class="hindi-3d-title">शर्मा टी स्टॉल</h1>
         <div class="sub-tagline">
-          ☕ एक कड़क चाय with 90s Highway Radio 📻
+          ☕ एक कड़क चाय with Highway Radio 📻
         </div>
       </div>
     </main>
@@ -529,15 +599,20 @@
           <input type="range" class="vol-slider" min="0" max="100" value="100" oninput="changeVol(this.value)" />
         </div>
       </div>
-
-      <div class="footer-note">
-        Space: <b>Play/Pause</b> • N: <b>Next</b> • P: <b>Prev</b> • 36 Superhit MP3s
-      </div>
     </footer>
   </div>
 
+  <!-- Sliding Playlist Drawer -->
+  <div class="drawer-overlay" id="drawer-overlay" onclick="toggleDrawer()"></div>
+  <div class="playlist-drawer" id="playlist-drawer">
+    <div class="drawer-header">
+      <h3>📻 Radio Playlist (45 Tracks)</h3>
+      <button class="close-btn" onclick="toggleDrawer()">✕</button>
+    </div>
+    <div class="song-list-scroll" id="song-list-scroll"></div>
+  </div>
+
   <script>
-    // Exact mapping to your 36 uploaded MP3 files in songs/ folder
     const playlist = [
       { title: "Kitaben Bahut Si", artist: "Baazigar • 90s Classic", file: "36 - Kitaben Bahut Si.mp3" },
       { title: "Dil Ne Yeh Kaha Hain Dil Se", artist: "Dhadkan • Kumar Sanu & Alka Yagnik", file: "35 - Dil Ne Yeh Kaha Hain Dil Se.mp3" },
@@ -574,17 +649,16 @@
       { title: "Jeeta Tha Jiske Liye", artist: "Dilwale • Kumar Sanu & Alka Yagnik", file: "04 - Jeeta Tha Jiske Liye.mp3" },
       { title: "Tumse Milne Ko Dil", artist: "Shikari • Kumar Sanu & Alka Yagnik", file: "03 - Tumse Milne Ko Dil (Jhankar).mp3" },
       { title: "Kyon Ki Itna Pyar", artist: "Kyon Ki • Udit Narayan & Alka Yagnik", file: "02 - KYON KI ITNA PYAR.mp3" },
-      { title: "Mujhse Mohabbat Ka", artist: "Hum Hain Rahi Pyar Ke • Kumar Sanu & Alka Yagnik", file: "01 - Mujhse Mohabbat Ka.mp3" }
-      // Aapke naye classic tracks (Sequence: 37 onwards)
-  { title: "Gori Tera Gaon Bada Pyara", artist: "Chitchor • K.J. Yesudas", file: "37 - Gori Tera Gaon Bada Pyara.mp3" },
-  { title: "Baharon Phool Barsao", artist: "Suraj • Mohammed Rafi", file: "38 - Baharon Phool Barsao.mp3" },
-  { title: "Aane Se Uske Aaye Bahar", artist: "Jeene Ki Raah • Mohammed Rafi", file: "39 - Aane Se Uske Aaye Bahar.mp3" },
-  { title: "Meri Pyari Bindu", artist: "Padosan • Kishore Kumar", file: "40 - Meri Pyari Bindu.mp3" },
-  { title: "Dekha Na Haye Re", artist: "Bombay to Goa • Kishore Kumar", file: "41 - Dekha Na Haye Re.mp3" },
-  { title: "Sawan Ka Mahina", artist: "Milan • Mukesh & Lata Mangeshkar", file: "42 - Sawan Ka Mahina.mp3" },
-  { title: "Ankhiyon Ke Jharokhon Se", artist: "Ankhiyon Ke Jharokhon Se • Hemlata", file: "43 - Ankhiyon Ke Jharokhon Se.mp3" },
-  { title: "Kehna Hai Kehna Hai", artist: "Padosan • Kishore Kumar", file: "44 - Kehna Hai.mp3" },
-  { title: "Main Chali Main Chali", artist: "Padosan • Lata Mangeshkar & Asha Bhosle", file: "45 - Main Chali Main Chali.mp3" }
+      { title: "Mujhse Mohabbat Ka", artist: "Hum Hain Rahi Pyar Ke • Kumar Sanu & Alka Yagnik", file: "01 - Mujhse Mohabbat Ka.mp3" },
+      { title: "Gori Tera Gaon Bada Pyara", artist: "Chitchor • K.J. Yesudas", file: "37 - Gori Tera Gaon Bada Pyara.mp3" },
+      { title: "Baharon Phool Barsao", artist: "Suraj • Mohammed Rafi", file: "38 - Baharon Phool Barsao.mp3" },
+      { title: "Aane Se Uske Aaye Bahar", artist: "Jeene Ki Raah • Mohammed Rafi", file: "39 - Aane Se Uske Aaye Bahar.mp3" },
+      { title: "Meri Pyari Bindu", artist: "Padosan • Kishore Kumar", file: "40 - Meri Pyari Bindu.mp3" },
+      { title: "Dekha Na Haye Re", artist: "Bombay to Goa • Kishore Kumar", file: "41 - Dekha Na Haye Re.mp3" },
+      { title: "Sawan Ka Mahina", artist: "Milan • Mukesh & Lata Mangeshkar", file: "42 - Sawan Ka Mahina.mp3" },
+      { title: "Ankhiyon Ke Jharokhon Se", artist: "Ankhiyon Ke Jharokhon Se • Hemlata", file: "43 - Ankhiyon Ke Jharokhon Se.mp3" },
+      { title: "Kehna Hai Kehna Hai", artist: "Padosan • Kishore Kumar", file: "44 - Kehna Hai.mp3" },
+      { title: "Main Chali Main Chali", artist: "Padosan • Lata Mangeshkar & Asha Bhosle", file: "45 - Main Chali Main Chali.mp3" }
     ];
 
     let currentIdx = 0;
@@ -611,6 +685,7 @@
       lineFill.style.width = '0%';
       tCur.innerText = '0:00';
       tDur.innerText = '0:00';
+      highlightActiveTrack(idx);
     }
 
     function togglePlay() {
@@ -677,8 +752,49 @@
       audio.currentTime = ratio * audio.duration;
     }
 
-    function changeVol(v) {
-      audio.volume = v / 100;
+    function changeVol(v) { audio.volume = v / 100; }
+
+    function toggleDrawer() {
+      document.getElementById('playlist-drawer').classList.toggle('open');
+      document.getElementById('drawer-overlay').classList.toggle('active');
+    }
+
+    function renderPlaylistUI() {
+      const container = document.getElementById('song-list-scroll');
+      container.innerHTML = '';
+
+      playlist.forEach((song, idx) => {
+        const item = document.createElement('div');
+        item.className = `song-item ${idx === currentIdx ? 'active' : ''}`;
+        item.id = `song-item-${idx}`;
+        item.onclick = () => {
+          loadSong(idx);
+          audio.play().then(() => {
+            document.body.classList.add('playing');
+            playBtn.innerText = '⏸';
+            discThumb.style.animationPlayState = 'running';
+          });
+          toggleDrawer();
+        };
+
+        item.innerHTML = `
+          <div class="song-item-idx">${idx + 1}</div>
+          <div class="song-item-meta">
+            <div class="song-item-name">${song.title}</div>
+            <div class="song-item-sub">${song.artist}</div>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function highlightActiveTrack(idx) {
+      document.querySelectorAll('.song-item').forEach(el => el.classList.remove('active'));
+      const activeEl = document.getElementById(`song-item-${idx}`);
+      if (activeEl) {
+        activeEl.classList.add('active');
+        activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
     }
 
     function speakRamRamSa() {
@@ -690,37 +806,51 @@
       window.speechSynthesis.speak(utterance);
     }
 
+    // Authentic Indian Truck Multi-Tone Air Horn (Iconic Naagin / Desi Highway Tune)
     function blowTruckHorn() {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if (!AudioContext) return;
-      const ctx = new AudioContext();
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
 
-      function playHornBurst(startTime, duration) {
-        const frequencies = [185, 233, 370, 466];
-        frequencies.forEach((freq, idx) => {
+      const hornTune = [
+        { f: 440, d: 0.12, p: 0.04 }, // A4
+        { f: 494, d: 0.12, p: 0.04 }, // B4
+        { f: 523, d: 0.14, p: 0.04 }, // C5
+        { f: 494, d: 0.12, p: 0.04 }, // B4
+        { f: 440, d: 0.14, p: 0.05 }, // A4
+        { f: 392, d: 0.14, p: 0.04 }, // G4
+        { f: 440, d: 0.35, p: 0.08 }, // A4
+        { f: 523, d: 0.16, p: 0.04 }, // C5
+        { f: 587, d: 0.45, p: 0.00 }  // D5
+      ];
+
+      let startTime = ctx.currentTime + 0.02;
+
+      hornTune.forEach((note) => {
+        const pipes = [note.f, note.f * 1.5]; // Dual Chime harmonics
+
+        pipes.forEach((freq) => {
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
 
-          osc.type = idx % 2 === 0 ? 'sawtooth' : 'triangle';
+          osc.type = 'sawtooth';
           osc.frequency.setValueAtTime(freq, startTime);
-          osc.frequency.exponentialRampToValueAtTime(freq * 1.02, startTime + duration);
+          osc.frequency.exponentialRampToValueAtTime(freq * 1.03, startTime + note.d);
 
-          gain.gain.setValueAtTime(0.001, startTime);
-          gain.gain.linearRampToValueAtTime(0.25 / frequencies.length, startTime + 0.04);
-          gain.gain.setValueAtTime(0.25 / frequencies.length, startTime + duration - 0.05);
-          gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+          gain.gain.setValueAtTime(0.0001, startTime);
+          gain.gain.linearRampToValueAtTime(0.18, startTime + 0.02);
+          gain.gain.setValueAtTime(0.18, startTime + note.d - 0.03);
+          gain.gain.exponentialRampToValueAtTime(0.0001, startTime + note.d);
 
           osc.connect(gain);
           gain.connect(ctx.destination);
 
           osc.start(startTime);
-          osc.stop(startTime + duration);
+          osc.stop(startTime + note.d);
         });
-      }
 
-      const now = ctx.currentTime;
-      playHornBurst(now, 0.22);
-      playHornBurst(now + 0.28, 0.45);
+        startTime += note.d + note.p;
+      });
     }
 
     playBtn.addEventListener('click', togglePlay);
@@ -743,7 +873,7 @@
       document.getElementById('live-clock').innerText = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }, 1000);
 
-    // Initial load
+    renderPlaylistUI();
     loadSong(0);
   </script>
 </body>
