@@ -1,0 +1,15 @@
+{
+  "name": "शर्मा टी स्टॉल - Highway Radio",
+  "short_name": "Sharma Radio",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0e0603",
+  "theme_color": "#ffb703",
+  "icons": [
+    {
+      "src": "bg.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
