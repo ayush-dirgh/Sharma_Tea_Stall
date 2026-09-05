@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>शर्मा टी स्टॉल | Highway Radio</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Yatra+One&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --amber-gold: #ffb703;
+      --glass-panel: rgba(18, 9, 5, 0.94);
+      --glass-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: #0e0603;
+      color: #fff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .app-root {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      z-index: 10;
+    }
+
+    .bg-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      z-index: 0;
+      filter: brightness(0.92);
+      transition: filter 0.4s ease, transform 0.6s ease;
+    }
+
+    .screen-overlay {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 35%, rgba(0,0,0,0.1) 25%, rgba(12, 5, 2, 0.72) 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .beat-glow-layer {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(255, 140, 0, 0.35) 0%, rgba(255, 69, 0, 0.15) 50%, transparent 80%);
+      transition: opacity 0.4s ease;
+    }
+
+    body.playing .beat-glow-layer {
+      opacity: 1;
+      animation: ambientBeatPulse 1.1s infinite alternate ease-in-out;
+    }
+
+    body.playing .bg-canvas {
+      filter: brightness(1.04) contrast(1.05);
+      transform: scale(1.02);
+    }
+
+    @keyframes ambientBeatPulse {
+      0% { opacity: 0.35; transform: scale(0.99); }
+      50% { opacity: 0.95; transform: scale(1.015); }
+      100% { opacity: 0.45; transform: scale(1); }
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      z-index: 20;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .time-lbl {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #eeddcc;
+    }
+
+    .online-tag {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.78rem;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 4px 12px;
+      border-radius: 99px;
+      color: #dfcebe;
+      backdrop-filter: blur(10px);
+    }
+
+    .pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 10px #22c55e;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .marwadi-voice-btn {
+      background: linear-gradient(135deg, rgba(230, 126, 34, 0.6), rgba(211, 84, 0, 0.45));
+      border: 1px solid var(--amber-gold);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 99px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 12px rgba(255, 183, 3, 0.35);
+      transition: all 0.2s;
+    }
+
+    .truck-horn-btn {
+      background: linear-gradient(135deg, rgba(255, 111, 0, 0.75), rgba(216, 67, 21, 0.6));
+      border: 1px solid #ffb300;
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 99px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 14px rgba(255, 111, 0, 0.45);
+      transition: all 0.15s;
+    }
+    .truck-horn-btn:active { transform: scale(0.92); }
+
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      pointer-events: none;
+      margin-top: -30px;
+      padding: 0 20px;
+      z-index: 20;
+    }
+
+    .stall-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      perspective: 800px;
+    }
+
+    .hindi-3d-title {
+      font-family: 'Yatra One', cursive;
+      font-size: clamp(3.2rem, 8vw, 6.2rem);
+      line-height: 1.05;
+      color: #fffbf0;
+      letter-spacing: 2px;
+      text-shadow: 
+        0 1px 0 #ffe082,
+        0 2px 0 #ffd54f,
+        0 3px 0 #ffca28,
+        0 4px 0 #ffb300,
+        0 5px 0 #e67e22,
+        0 6px 0 #d35400,
+        0 7px 0 #a04000,
+        0 8px 0 #6e2c00,
+        0 10px 18px rgba(0, 0, 0, 0.8),
+        0 20px 35px rgba(0, 0, 0, 0.95);
+      transform: perspective(600px) rotateX(4deg);
+      display: inline-block;
+      filter: drop-shadow(0 15px 25px rgba(0,0,0,0.85));
+      transition: transform 0.2s ease;
+      animation: stallFloat 3.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes stallFloat {
+      0% { transform: translateY(0px) rotateX(4deg); }
+      100% { transform: translateY(-8px) rotateX(2deg); }
+    }
+
+    body.playing .hindi-3d-title {
+      animation: beatTitleRhythm 0.8s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes beatTitleRhythm {
+      0% { transform: perspective(600px) rotateX(4deg) scale(1); }
+      50% {
+        transform: perspective(600px) rotateX(1deg) scale(1.05);
+        color: #ffffff;
+        text-shadow: 
+          0 1px 0 #fff8e1,
+          0 2px 0 #ffe082,
+          0 4px 0 #ffca28,
+          0 6px 0 #ffb300,
+          0 8px 0 #fb8c00,
+          0 10px 0 #e65100,
+          0 14px 22px rgba(255, 152, 0, 0.8),
+          0 22px 35px rgba(255, 87, 34, 0.6),
+          0 32px 50px rgba(0, 0, 0, 0.95);
+        filter: drop-shadow(0 18px 30px rgba(255, 140, 0, 0.5));
+      }
+      100% { transform: perspective(600px) rotateX(3deg) scale(1.02); }
+    }
+
+    .sub-tagline {
+      font-size: clamp(0.85rem, 2.3vw, 1.05rem);
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #ffe8d6;
+      margin-top: 14px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.9);
+      transition: color 0.3s;
+    }
+
+    body.playing .sub-tagline {
+      color: var(--amber-gold);
+    }
+
+    footer {
+      padding: 0 16px 18px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      z-index: 20;
+    }
+
+    .player-dock {
+      width: 100%;
+      max-width: 680px;
+      background: var(--glass-panel);
+      backdrop-filter: blur(25px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 12px 22px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .disc-wrapper {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      border: 2px solid var(--amber-gold);
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #000;
+      box-shadow: 0 0 16px rgba(255, 183, 3, 0.35);
+    }
+
+    .disc-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      animation: spinTrack 10s linear infinite;
+      animation-play-state: paused;
+    }
+
+    @keyframes spinTrack { 100% { transform: rotate(360deg); } }
+
+    .track-details { 
+      flex: 1; 
+      text-align: left; 
+      min-width: 0; 
+    }
+
+    .track-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .track-singer { 
+      font-size: 0.74rem; 
+      color: #ffb77d; 
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .progress-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .line-bg {
+      flex: 1;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 99px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .line-fill {
+      width: 0%;
+      height: 100%;
+      background: var(--amber-gold);
+      border-radius: 99px;
+      pointer-events: none;
+    }
+
+    .time-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #dfcebe;
+      min-width: 32px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .controls { 
+      display: flex; 
+      align-items: center; 
+      gap: 12px; 
+    }
+
+    .btn-icon {
+      background: none;
+      border: none;
+      color: #eee;
+      font-size: 1.35rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.1s;
+    }
+    .btn-icon:active { transform: scale(0.9); }
+
+    .btn-play {
+      width: 50px;
+      height: 50px;
+      background: #fff;
+      color: #111;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 4px 15px rgba(255, 183, 3, 0.4);
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-play:hover { background: var(--amber-gold); }
+    .btn-play:active { transform: scale(0.92); }
+
+    .vol-box { 
+      display: flex; 
+      align-items: center; 
+      gap: 6px; 
+    }
+    .vol-slider { 
+      width: 60px; 
+      accent-color: var(--amber-gold); 
+      cursor: pointer; 
+    }
+
+    .footer-note { 
+      font-size: 0.72rem; 
+      color: rgba(255, 255, 255, 0.45); 
+    }
+
+    @media (max-width: 768px) {
+      header { padding: 12px 16px; }
+      main { margin-top: -20px; }
+      .vol-box { display: none; }
+      .footer-note { display: none; }
+      .player-dock { padding: 10px 16px; }
+      .marwadi-voice-btn, .truck-horn-btn { font-size: 0.72rem; padding: 5px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Image Uploaded as bg.jpeg -->
+  <img src="bg.jpeg" alt="Tapri" class="bg-canvas" onerror="this.onerror=null; this.src='bg.jpeg.jpeg';" />
+  <div class="screen-overlay"></div>
+  <div class="beat-glow-layer"></div>
+
+  <div class="app-root">
+    <header>
+      <div class="header-left">
+        <div class="time-lbl" id="live-clock">12:00 PM</div>
+        <div class="online-tag">
+          <div class="pulse"></div>
+          <span id="station-status">100% Ad-Free Highway Radio</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="marwadi-voice-btn" onclick="speakRamRamSa()" title="राम राम सा सुनो">
+          🙏 राम राम सा
+        </button>
+        <button class="truck-horn-btn" onclick="blowTruckHorn()" title="ट्रक हॉर्न बजाओ">
+          🎺 ट्रक हॉर्न
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <div class="stall-wrapper">
+        <h1 class="hindi-3d-title">शर्मा टी स्टॉल</h1>
+        <div class="sub-tagline">
+          ☕ एक कड़क चाय with 90s Highway Radio 📻
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="player-dock">
+        <div class="disc-wrapper">
+          <img id="disc-thumb" class="disc-thumb" src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=150&auto=format&fit=crop&q=80" alt="Disc" />
+        </div>
+
+        <div class="track-details">
+          <div class="track-title" id="track-name">Loading Tracks...</div>
+          <div class="track-singer" id="track-artist">Sharma Tea Stall Radio</div>
+
+          <div class="progress-line">
+            <span class="time-tag" id="t-cur">0:00</span>
+            <div class="line-bg" id="line-bg" onclick="seekSong(event)">
+              <div class="line-fill" id="line-fill"></div>
+            </div>
+            <span class="time-tag" id="t-dur">0:00</span>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="btn-icon" id="b-prev" title="Previous Track (P)">⏮</button>
+          <button class="btn-play" id="b-play" title="Play/Pause (Space)">▶</button>
+          <button class="btn-icon" id="b-next" title="Next Track (N)">⏭</button>
+        </div>
+
+        <div class="vol-box">
+          <span style="font-size: 0.9rem; color: #bbb;">🔊</span>
+          <input type="range" class="vol-slider" min="0" max="100" value="100" oninput="changeVol(this.value)" />
+        </div>
+      </div>
+
+      <div class="footer-note">
+        Space: <b>Play/Pause</b> • N: <b>Next</b> • P: <b>Prev</b> • 36 Superhit MP3s
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Exact mapping to your 36 uploaded MP3 files in songs/ folder
+    const playlist = [
+      { title: "Kitaben Bahut Si", artist: "Baazigar • 90s Classic", file: "36 - Kitaben Bahut Si.mp3" },
+      { title: "Dil Ne Yeh Kaha Hain Dil Se", artist: "Dhadkan • Kumar Sanu & Alka Yagnik", file: "35 - Dil Ne Yeh Kaha Hain Dil Se.mp3" },
+      { title: "Aksar Is Duniya Mein", artist: "Dhadkan • Alka Yagnik", file: "34 - Aksar Is Duniya Mein.mp3" },
+      { title: "Sochenge Tumhe Pyar", artist: "Deewana • Kumar Sanu", file: "33 - Sochenge Tumhe Pyar.mp3" },
+      { title: "Dil Ke Badle Sanam", artist: "Kyon Ki • Udit Narayan & Alka Yagnik", file: "32 - DIL KE BADLE SANAM.mp3" },
+      { title: "Tu Hi Re", artist: "Bombay • Hariharan & Kavita Krishnamurthy", file: "31 - Tu Hi Re (From ＂Bombay＂).mp3" },
+      { title: "Ae Kash Ke Hum", artist: "Kabhi Haan Kabhi Naa • Kumar Sanu", file: "30 - Ae Kash Ke Hum.mp3" },
+      { title: "Aye Mere Humsafar", artist: "Qayamat Se Qayamat Tak • Udit & Alka", file: "29 - Aye Mere Humsafar.mp3" },
+      { title: "Barsaat Ke Mausam Mein", artist: "Naajayaz • Kumar Sanu", file: "28 - Barsaat Ke Mausam Mein.mp3" },
+      { title: "Nahin Yeh Ho Nahin Sakta", artist: "Barsaat • Kumar Sanu & Sadhana Sargam", file: "27 - Nahin Yeh Ho Nahin Sakta.mp3" },
+      { title: "Tere Dar Par Sanam", artist: "Phir Teri Kahani Yaad Aayee • Kumar Sanu", file: "26 - Tere Dar Par Sanam (Male).mp3" },
+      { title: "Meri Mehbooba", artist: "Pardes • Kumar Sanu & Alka Yagnik", file: "25 - Meri Mehbooba.mp3" },
+      { title: "Chand Se Parda", artist: "Aao Pyaar Karen • Kumar Sanu", file: "24 - Chand Se Parda.mp3" },
+      { title: "Jhanjharia", artist: "Krishna • Abhijeet", file: "23 - Jhanjharia (Male).mp3" },
+      { title: "Oodhni", artist: "Tere Naam • Udit Narayan & Alka Yagnik", file: "22 - OODHNI.mp3" },
+      { title: "Jaane Kyon Log Pyar", artist: "Dil Chahta Hai • Udit Narayan & Alka Yagnik", file: "21 - Jaane Kyon Log Pyar.mp3" },
+      { title: "Tumse Milna", artist: "Tere Naam • Udit Narayan", file: "20 - TUMSE MILNA.mp3" },
+      { title: "Tum To Thehre Pardesi", artist: "Altaf Raja • Highway Cassette King", file: "19 - Tum To Thehre Pardesi.mp3" },
+      { title: "Pardesi Pardesi", artist: "Raja Hindustani • Udit Narayan & Alka Yagnik", file: "18 - Pardesi Pardesi.mp3" },
+      { title: "Jo Bhi Kasmein", artist: "Raaz • Udit Narayan & Alka Yagnik", file: "17 - Jo Bhi Kasmein.mp3" },
+      { title: "Yeh Dil Deewana", artist: "Pardes • Sonu Nigam", file: "16 - Yeh Dil Deewana.mp3" },
+      { title: "Teri Umeed Tera Intezar", artist: "Deewana • Kumar Sanu & Sadhana Sargam", file: "15 - Teri Umeed Tera Intezar.mp3" },
+      { title: "Ek Sanam Chahiye Aashiqui Ke Liye", artist: "Aashiqui • Kumar Sanu", file: "14 - Ek Sanam Chahiye Aashiqui Ke Liye.mp3" },
+      { title: "Ishq Bina", artist: "Taal • Sonu Nigam & Anuradha Sriram", file: "13 - Ishq Bina Ishq Bina.mp3" },
+      { title: "Do Dil Mil Rahe Hai", artist: "Pardes • Kumar Sanu", file: "12 - Do Dil Mil Rahe Hai.mp3" },
+      { title: "Kehna Hi Kya", artist: "Bombay • K.S. Chithra", file: "11 - Kehna Hi Kya (From ＂Bombay＂).mp3" },
+      { title: "Mere Rang Mein Rangne Wali", artist: "Maine Pyar Kiya • S.P. Balasubrahmanyam", file: "10 - Mere Rang Mein Rangne Wali.mp3" },
+      { title: "Tere Naam", artist: "Tere Naam • Udit Narayan", file: "09 - TERE NAAM.mp3" },
+      { title: "Tumse Milne Ki Tamanna Hai", artist: "Saajan • S.P. Balasubrahmanyam", file: "08 - Tumse Milne Ki Tamanna Hai.mp3" },
+      { title: "Agar Tum Na Hote", artist: "Agar Tum Na Hote • Kishore Kumar", file: "07 - Agar Tum Na Hote (Male Version).mp3" },
+      { title: "Tum Dil Ki Dhadkan Mein", artist: "Dhadkan • Kumar Sanu", file: "06 - Tum Dil Ki Dhadkan Mein.mp3" },
+      { title: "Aaye Ho Meri Zindagi Mein", artist: "Raja Hindustani • Udit Narayan", file: "05 - Aaye Ho Meri Zindagi Mein (Male).mp3" },
+      { title: "Jeeta Tha Jiske Liye", artist: "Dilwale • Kumar Sanu & Alka Yagnik", file: "04 - Jeeta Tha Jiske Liye.mp3" },
+      { title: "Tumse Milne Ko Dil", artist: "Shikari • Kumar Sanu & Alka Yagnik", file: "03 - Tumse Milne Ko Dil (Jhankar).mp3" },
+      { title: "Kyon Ki Itna Pyar", artist: "Kyon Ki • Udit Narayan & Alka Yagnik", file: "02 - KYON KI ITNA PYAR.mp3" },
+      { title: "Mujhse Mohabbat Ka", artist: "Hum Hain Rahi Pyar Ke • Kumar Sanu & Alka Yagnik", file: "01 - Mujhse Mohabbat Ka.mp3" }
+    ];
+
+    let currentIdx = 0;
+    const audio = new Audio();
+    audio.preload = "auto";
+
+    const playBtn = document.getElementById('b-play');
+    const prevBtn = document.getElementById('b-prev');
+    const nextBtn = document.getElementById('b-next');
+    const trackName = document.getElementById('track-name');
+    const trackArtist = document.getElementById('track-artist');
+    const discThumb = document.getElementById('disc-thumb');
+    const lineFill = document.getElementById('line-fill');
+    const tCur = document.getElementById('t-cur');
+    const tDur = document.getElementById('t-dur');
+    const stationStatus = document.getElementById('station-status');
+
+    function loadSong(idx) {
+      currentIdx = idx;
+      const s = playlist[idx];
+      audio.src = 'songs/' + encodeURIComponent(s.file);
+      trackName.innerText = s.title;
+      trackArtist.innerText = s.artist;
+      lineFill.style.width = '0%';
+      tCur.innerText = '0:00';
+      tDur.innerText = '0:00';
+    }
+
+    function togglePlay() {
+      if (audio.paused) {
+        audio.play().then(() => {
+          document.body.classList.add('playing');
+          playBtn.innerText = '⏸';
+          discThumb.style.animationPlayState = 'running';
+          stationStatus.innerText = 'Playing Live 🎶';
+        }).catch(err => {
+          console.error("Playback restriction:", err);
+          stationStatus.innerText = 'Click Play';
+        });
+      } else {
+        audio.pause();
+        document.body.classList.remove('playing');
+        playBtn.innerText = '▶';
+        discThumb.style.animationPlayState = 'paused';
+        stationStatus.innerText = 'Radio Paused';
+      }
+    }
+
+    function nextTrack() {
+      currentIdx = (currentIdx + 1) % playlist.length;
+      loadSong(currentIdx);
+      audio.play().then(() => {
+        document.body.classList.add('playing');
+        playBtn.innerText = '⏸';
+        discThumb.style.animationPlayState = 'running';
+      });
+    }
+
+    function prevTrack() {
+      currentIdx = (currentIdx - 1 + playlist.length) % playlist.length;
+      loadSong(currentIdx);
+      audio.play().then(() => {
+        document.body.classList.add('playing');
+        playBtn.innerText = '⏸';
+        discThumb.style.animationPlayState = 'running';
+      });
+    }
+
+    function fmtTime(sec) {
+      if (isNaN(sec) || !sec) return '0:00';
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    audio.addEventListener('timeupdate', () => {
+      if (audio.duration) {
+        lineFill.style.width = (audio.currentTime / audio.duration * 100) + '%';
+        tCur.innerText = fmtTime(audio.currentTime);
+        tDur.innerText = fmtTime(audio.duration);
+      }
+    });
+
+    audio.addEventListener('ended', nextTrack);
+
+    function seekSong(e) {
+      if (!audio.duration) return;
+      const rect = e.currentTarget.getBoundingClientRect();
+      const ratio = (e.clientX - rect.left) / rect.width;
+      audio.currentTime = ratio * audio.duration;
+    }
+
+    function changeVol(v) {
+      audio.volume = v / 100;
+    }
+
+    function speakRamRamSa() {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance("राम राम सा! पधारो म्हारे देश! शर्मा टी स्टॉल री कड़क चाय और हाईवे 90s रेडियो तैय्यार है सा!");
+      utterance.lang = 'hi-IN';
+      utterance.pitch = 0.86;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function blowTruckHorn() {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return;
+      const ctx = new AudioContext();
+
+      function playHornBurst(startTime, duration) {
+        const frequencies = [185, 233, 370, 466];
+        frequencies.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+
+          osc.type = idx % 2 === 0 ? 'sawtooth' : 'triangle';
+          osc.frequency.setValueAtTime(freq, startTime);
+          osc.frequency.exponentialRampToValueAtTime(freq * 1.02, startTime + duration);
+
+          gain.gain.setValueAtTime(0.001, startTime);
+          gain.gain.linearRampToValueAtTime(0.25 / frequencies.length, startTime + 0.04);
+          gain.gain.setValueAtTime(0.25 / frequencies.length, startTime + duration - 0.05);
+          gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc.start(startTime);
+          osc.stop(startTime + duration);
+        });
+      }
+
+      const now = ctx.currentTime;
+      playHornBurst(now, 0.22);
+      playHornBurst(now + 0.28, 0.45);
+    }
+
+    playBtn.addEventListener('click', togglePlay);
+    nextBtn.addEventListener('click', nextTrack);
+    prevBtn.addEventListener('click', prevTrack);
+
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        togglePlay();
+      } else if (e.key.toLowerCase() === 'n') {
+        nextTrack();
+      } else if (e.key.toLowerCase() === 'p') {
+        prevTrack();
+      }
+    });
+
+    setInterval(() => {
+      const d = new Date();
+      document.getElementById('live-clock').innerText = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }, 1000);
+
+    // Initial load
+    loadSong(0);
+  </script>
+</body>
+</html>
