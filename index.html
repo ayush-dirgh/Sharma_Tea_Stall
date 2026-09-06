@@ -481,7 +481,7 @@
       font-size: 0.8rem;
       font-weight: 800;
       color: var(--amber-gold);
-      min-width: 24px;
+      min-width: 28px;
     }
 
     .song-item-meta { flex: 1; min-width: 0; text-align: left; }
@@ -526,7 +526,6 @@
 </head>
 <body>
 
-  <!-- Background Image Uploaded as bg.jpeg -->
   <img src="bg.jpeg" alt="Tapri" class="bg-canvas" onerror="this.onerror=null; this.src='bg.jpeg.jpeg';" />
   <div class="screen-overlay"></div>
   <div class="beat-glow-layer"></div>
@@ -606,7 +605,7 @@
   <div class="drawer-overlay" id="drawer-overlay" onclick="toggleDrawer()"></div>
   <div class="playlist-drawer" id="playlist-drawer">
     <div class="drawer-header">
-      <h3>📻 Radio Playlist (45 Tracks)</h3>
+      <h3 id="drawer-count-title">📻 Radio Playlist</h3>
       <button class="close-btn" onclick="toggleDrawer()">✕</button>
     </div>
     <div class="song-list-scroll" id="song-list-scroll"></div>
@@ -614,51 +613,129 @@
 
   <script>
     const playlist = [
-      { title: "Kitaben Bahut Si", artist: "Baazigar • 90s Classic", file: "36 - Kitaben Bahut Si.mp3" },
-      { title: "Dil Ne Yeh Kaha Hain Dil Se", artist: "Dhadkan • Kumar Sanu & Alka Yagnik", file: "35 - Dil Ne Yeh Kaha Hain Dil Se.mp3" },
-      { title: "Aksar Is Duniya Mein", artist: "Dhadkan • Alka Yagnik", file: "34 - Aksar Is Duniya Mein.mp3" },
-      { title: "Sochenge Tumhe Pyar", artist: "Deewana • Kumar Sanu", file: "33 - Sochenge Tumhe Pyar.mp3" },
-      { title: "Dil Ke Badle Sanam", artist: "Kyon Ki • Udit Narayan & Alka Yagnik", file: "32 - DIL KE BADLE SANAM.mp3" },
-      { title: "Tu Hi Re", artist: "Bombay • Hariharan & Kavita Krishnamurthy", file: "31 - Tu Hi Re (From ＂Bombay＂).mp3" },
-      { title: "Ae Kash Ke Hum", artist: "Kabhi Haan Kabhi Naa • Kumar Sanu", file: "30 - Ae Kash Ke Hum.mp3" },
-      { title: "Aye Mere Humsafar", artist: "Qayamat Se Qayamat Tak • Udit & Alka", file: "29 - Aye Mere Humsafar.mp3" },
-      { title: "Barsaat Ke Mausam Mein", artist: "Naajayaz • Kumar Sanu", file: "28 - Barsaat Ke Mausam Mein.mp3" },
-      { title: "Nahin Yeh Ho Nahin Sakta", artist: "Barsaat • Kumar Sanu & Sadhana Sargam", file: "27 - Nahin Yeh Ho Nahin Sakta.mp3" },
-      { title: "Tere Dar Par Sanam", artist: "Phir Teri Kahani Yaad Aayee • Kumar Sanu", file: "26 - Tere Dar Par Sanam (Male).mp3" },
-      { title: "Meri Mehbooba", artist: "Pardes • Kumar Sanu & Alka Yagnik", file: "25 - Meri Mehbooba.mp3" },
-      { title: "Chand Se Parda", artist: "Aao Pyaar Karen • Kumar Sanu", file: "24 - Chand Se Parda.mp3" },
-      { title: "Jhanjharia", artist: "Krishna • Abhijeet", file: "23 - Jhanjharia (Male).mp3" },
-      { title: "Oodhni", artist: "Tere Naam • Udit Narayan & Alka Yagnik", file: "22 - OODHNI.mp3" },
-      { title: "Jaane Kyon Log Pyar", artist: "Dil Chahta Hai • Udit Narayan & Alka Yagnik", file: "21 - Jaane Kyon Log Pyar.mp3" },
-      { title: "Tumse Milna", artist: "Tere Naam • Udit Narayan", file: "20 - TUMSE MILNA.mp3" },
-      { title: "Tum To Thehre Pardesi", artist: "Altaf Raja • Highway Cassette King", file: "19 - Tum To Thehre Pardesi.mp3" },
-      { title: "Pardesi Pardesi", artist: "Raja Hindustani • Udit Narayan & Alka Yagnik", file: "18 - Pardesi Pardesi.mp3" },
-      { title: "Jo Bhi Kasmein", artist: "Raaz • Udit Narayan & Alka Yagnik", file: "17 - Jo Bhi Kasmein.mp3" },
-      { title: "Yeh Dil Deewana", artist: "Pardes • Sonu Nigam", file: "16 - Yeh Dil Deewana.mp3" },
-      { title: "Teri Umeed Tera Intezar", artist: "Deewana • Kumar Sanu & Sadhana Sargam", file: "15 - Teri Umeed Tera Intezar.mp3" },
-      { title: "Ek Sanam Chahiye Aashiqui Ke Liye", artist: "Aashiqui • Kumar Sanu", file: "14 - Ek Sanam Chahiye Aashiqui Ke Liye.mp3" },
-      { title: "Ishq Bina", artist: "Taal • Sonu Nigam & Anuradha Sriram", file: "13 - Ishq Bina Ishq Bina.mp3" },
-      { title: "Do Dil Mil Rahe Hai", artist: "Pardes • Kumar Sanu", file: "12 - Do Dil Mil Rahe Hai.mp3" },
-      { title: "Kehna Hi Kya", artist: "Bombay • K.S. Chithra", file: "11 - Kehna Hi Kya (From ＂Bombay＂).mp3" },
-      { title: "Mere Rang Mein Rangne Wali", artist: "Maine Pyar Kiya • S.P. Balasubrahmanyam", file: "10 - Mere Rang Mein Rangne Wali.mp3" },
-      { title: "Tere Naam", artist: "Tere Naam • Udit Narayan", file: "09 - TERE NAAM.mp3" },
-      { title: "Tumse Milne Ki Tamanna Hai", artist: "Saajan • S.P. Balasubrahmanyam", file: "08 - Tumse Milne Ki Tamanna Hai.mp3" },
-      { title: "Agar Tum Na Hote", artist: "Agar Tum Na Hote • Kishore Kumar", file: "07 - Agar Tum Na Hote (Male Version).mp3" },
-      { title: "Tum Dil Ki Dhadkan Mein", artist: "Dhadkan • Kumar Sanu", file: "06 - Tum Dil Ki Dhadkan Mein.mp3" },
-      { title: "Aaye Ho Meri Zindagi Mein", artist: "Raja Hindustani • Udit Narayan", file: "05 - Aaye Ho Meri Zindagi Mein (Male).mp3" },
-      { title: "Jeeta Tha Jiske Liye", artist: "Dilwale • Kumar Sanu & Alka Yagnik", file: "04 - Jeeta Tha Jiske Liye.mp3" },
-      { title: "Tumse Milne Ko Dil", artist: "Shikari • Kumar Sanu & Alka Yagnik", file: "03 - Tumse Milne Ko Dil (Jhankar).mp3" },
-      { title: "Kyon Ki Itna Pyar", artist: "Kyon Ki • Udit Narayan & Alka Yagnik", file: "02 - KYON KI ITNA PYAR.mp3" },
-      { title: "Mujhse Mohabbat Ka", artist: "Hum Hain Rahi Pyar Ke • Kumar Sanu & Alka Yagnik", file: "01 - Mujhse Mohabbat Ka.mp3" },
-      { title: "Gori Tera Gaon Bada Pyara", artist: "Chitchor • K.J. Yesudas", file: "37 - Gori Tera Gaon Bada Pyara.mp3" },
-      { title: "Baharon Phool Barsao", artist: "Suraj • Mohammed Rafi", file: "38 - Baharon Phool Barsao.mp3" },
-      { title: "Aane Se Uske Aaye Bahar", artist: "Jeene Ki Raah • Mohammed Rafi", file: "39 - Aane Se Uske Aaye Bahar.mp3" },
-      { title: "Meri Pyari Bindu", artist: "Padosan • Kishore Kumar", file: "40 - Meri Pyari Bindu.mp3" },
-      { title: "Dekha Na Haye Re", artist: "Bombay to Goa • Kishore Kumar", file: "41 - Dekha Na Haye Re.mp3" },
-      { title: "Sawan Ka Mahina", artist: "Milan • Mukesh & Lata Mangeshkar", file: "42 - Sawan Ka Mahina.mp3" },
-      { title: "Ankhiyon Ke Jharokhon Se", artist: "Ankhiyon Ke Jharokhon Se • Hemlata", file: "43 - Ankhiyon Ke Jharokhon Se.mp3" },
-      { title: "Kehna Hai Kehna Hai", artist: "Padosan • Kishore Kumar", file: "44 - Kehna Hai.mp3" },
-      { title: "Main Chali Main Chali", artist: "Padosan • Lata Mangeshkar & Asha Bhosle", file: "45 - Main Chali Main Chali.mp3" }
+      { title: "Mujhse Mohabbat Ka", artist: "Hum Hain Rahi Pyar Ke", file: "01 - Mujhse Mohabbat Ka.mp3" },
+      { title: "Kyon Ki Itna Pyar", artist: "Kyon Ki", file: "02 - KYON KI ITNA PYAR.mp3" },
+      { title: "Tumse Milne Ko Dil (Jhankar)", artist: "Shikari", file: "03 - Tumse Milne Ko Dil (Jhankar).mp3" },
+      { title: "Jeeta Tha Jiske Liye", artist: "Dilwale", file: "04 - Jeeta Tha Jiske Liye.mp3" },
+      { title: "Aaye Ho Meri Zindagi Mein", artist: "Raja Hindustani", file: "05 - Aaye Ho Meri Zindagi Mein (Male).mp3" },
+      { title: "Tum Dil Ki Dhadkan Mein", artist: "Dhadkan", file: "06 - Tum Dil Ki Dhadkan Mein.mp3" },
+      { title: "Agar Tum Na Hote", artist: "Agar Tum Na Hote", file: "07 - Agar Tum Na Hote (Male Version).mp3" },
+      { title: "Tumse Milne Ki Tamanna Hai", artist: "Saajan", file: "08 - Tumse Milne Ki Tamanna Hai.mp3" },
+      { title: "Tere Naam", artist: "Tere Naam", file: "09 - TERE NAAM.mp3" },
+      { title: "Mere Rang Mein Rangne Wali", artist: "Maine Pyar Kiya", file: "10 - Mere Rang Mein Rangne Wali.mp3" },
+      { title: "Kehna Hi Kya", artist: "Bombay", file: "11 - Kehna Hi Kya (From ＂Bombay＂).mp3" },
+      { title: "Do Dil Mil Rahe Hai", artist: "Pardes", file: "12 - Do Dil Mil Rahe Hai.mp3" },
+      { title: "Ishq Bina", artist: "Taal", file: "13 - Ishq Bina Ishq Bina.mp3" },
+      { title: "Ek Sanam Chahiye Aashiqui Ke Liye", artist: "Aashiqui", file: "14 - Ek Sanam Chahiye Aashiqui Ke Liye.mp3" },
+      { title: "Teri Umeed Tera Intezar", artist: "Deewana", file: "15 - Teri Umeed Tera Intezar.mp3" },
+      { title: "Yeh Dil Deewana", artist: "Pardes", file: "16 - Yeh Dil Deewana.mp3" },
+      { title: "Jo Bhi Kasmein", artist: "Raaz", file: "17 - Jo Bhi Kasmein.mp3" },
+      { title: "Pardesi Pardesi", artist: "Raja Hindustani", file: "18 - Pardesi Pardesi.mp3" },
+      { title: "Tum To Thehre Pardesi", artist: "Altaf Raja Special", file: "19 - Tum To Thehre Pardesi.mp3" },
+      { title: "Tumse Milna", artist: "Tere Naam", file: "20 - TUMSE MILNA.mp3" },
+      { title: "Jaane Kyon Log Pyar", artist: "Dil Chahta Hai", file: "21 - Jaane Kyon Log Pyar.mp3" },
+      { title: "Oodhni", artist: "Tere Naam", file: "22 - OODHNI.mp3" },
+      { title: "Jhanjharia", artist: "Krishna", file: "23 - Jhanjharia (Male).mp3" },
+      { title: "Chand Se Parda", artist: "Aao Pyaar Karen", file: "24 - Chand Se Parda.mp3" },
+      { title: "Meri Mehbooba", artist: "Pardes", file: "25 - Meri Mehbooba.mp3" },
+      { title: "Tere Dar Par Sanam", artist: "Phir Teri Kahani Yaad Aayee", file: "26 - Tere Dar Par Sanam (Male).mp3" },
+      { title: "Nahin Yeh Ho Nahin Sakta", artist: "Barsaat", file: "27 - Nahin Yeh Ho Nahin Sakta.mp3" },
+      { title: "Barsaat Ke Mausam Mein", artist: "Naajayaz", file: "28 - Barsaat Ke Mausam Mein.mp3" },
+      { title: "Aye Mere Humsafar", artist: "Qayamat Se Qayamat Tak", file: "29 - Aye Mere Humsafar.mp3" },
+      { title: "Ae Kash Ke Hum", artist: "Kabhi Haan Kabhi Naa", file: "30 - Ae Kash Ke Hum.mp3" },
+      { title: "Tu Hi Re", artist: "Bombay", file: "31 - Tu Hi Re (From ＂Bombay＂).mp3" },
+      { title: "Dil Ke Badle Sanam", artist: "Kyon Ki", file: "32 - DIL KE BADLE SANAM.mp3" },
+      { title: "Sochenge Tumhe Pyar", artist: "Deewana", file: "33 - Sochenge Tumhe Pyar.mp3" },
+      { title: "Aksar Is Duniya Mein", artist: "Dhadkan", file: "34 - Aksar Is Duniya Mein.mp3" },
+      { title: "Dil Ne Yeh Kaha Hain Dil Se", artist: "Dhadkan", file: "35 - Dil Ne Yeh Kaha Hain Dil Se.mp3" },
+      { title: "Kitaben Bahut Si", artist: "Baazigar", file: "36 - Kitaben Bahut Si.mp3" },
+      { title: "Ankhiyon Ke Jharokhon Se", artist: "Sachin & Ranjeeta • Classic", file: "37 - Ankhiyon Ke Jharokhon Se - Classic Romantic Song - Sachin & Ranjeeta - Old Hindi Songs.mp3" },
+      { title: "Kehna Hai Kehna Hai", artist: "Kishore Kumar • Padosan", file: "38 - Kehna Hai - Superhit Classic Bollywood Hindi Song - Sunil Dutt, Saira Banu, Kishore Kumar - Padosan.mp3" },
+      { title: "Main Chali Main Chali", artist: "Lata Mangeshkar • Padosan", file: "39 - Main Chali Main Chali - Padosan - Saira Banu - Classic Old Hindi Songs.mp3" },
+      { title: "Hansta Hua Noorani Chehra", artist: "Parasmani Classic", file: "40 - Hansta Hua Noorani Chehra - Superhit Evergreen Classic Hindi Song - Geetanjali & Mahipal - Parasmani.mp3" },
+      { title: "Gori Tera Gaon Bada Pyara", artist: "Chitchor • K.J. Yesudas", file: "41 - Gori Tera Gaon Bada Pyara (HD) ｜ Chitchor ｜ Amol Palekar, Zarina Wahab ｜ Old Hindi Songs.mp3" },
+      { title: "Baharon Phool Barsao", artist: "Suraj • Mohammed Rafi", file: "42 - Baharon Phool Barsao - Suraj - Rajendra Kumar, Vyjayanthimala - Old Hindi Songs.mp3" },
+      { title: "Aane Se Uske Aaye Bahar", artist: "Jeene Ki Raah • Rafi Classic", file: "43 - Aane Se Uske - Bollywood Classic Songs - Jeetendra & Tanuja - Jeene Ki Raah.mp3" },
+      { title: "Meri Pyari Bindu", artist: "Padosan • Kishore Kumar", file: "44 - Meri Pyari Bindu - Padosan - Kishore Kumar & Sunil Dutt - Classic Comedy Songs.mp3" },
+      { title: "Dekha Na Haye Re", artist: "Bombay To Goa • Kishore Kumar", file: "45 - Dekha Na Haye Re - Amitabh Bachchan & Aruna Irani - Bombay To Goa.mp3" },
+      { title: "Sawan Ka Mahina", artist: "Milan • Mukesh & Lata", file: "46 - Sawan Ka Mahina - Milan - Sunil Dutt, Nutan - Classic Bollywood Old Hindi Songs.mp3" },
+      { title: "Bhai Batur", artist: "Padosan • Saira Banu", file: "47 - Bhai Batur - Classic Bollywood Song - Saira Banu - Padosan.mp3" },
+      { title: "Aap Mujhe Achchhe Lagne Lage", artist: "Jeene Ki Raah • Jeetendra", file: "48 - Aap Mujhe Achchhe Lagne Lage - Jeetendra - Jeene Ki Raah.mp3" },
+      { title: "O Maheki Maheki Thandi Hawa", artist: "Bombay To Goa • Kishore Kumar", file: "49 - O Maheki Maheki Thandi Hawa Ye Bata - Kishore, Mehmood & Aruna - Classic Hindi Song - Bombay To Goa.mp3" },
+      { title: "Baar Baar Tohe Kya Samjhaye", artist: "Aarti • Rafi & Lata", file: "50 - Baar Baar Tohe Kya Samjhaye ｜ Mohammed Rafi & Lata Mangeshkar ｜ Meena Kumari, Pradeep Kumar ｜ Aarti.mp3" },
+      { title: "Matwali Ankhowale", artist: "Chhote Nawab • Rafi & Lata", file: "51 - Matwali Ankhowale Romantic Song ｜ Mohammed Rafi, Lata Mangeshkar ｜ Chhote Nawab ｜ Mehmood, Helen.mp3" },
+      { title: "Nazar Na Phero Humse", artist: "Deedar • Dilip Kumar & Nargis", file: "52 - Nazar Na Phero Humse Video Song ｜ Dilip Kumar ｜ Nargis Dutt ｜ Ashok Kumar ｜ Hindi Romantic Song.mp3" },
+      { title: "Leja Meri Duayen", artist: "Deedar • Lata Mangeshkar", file: "53 - ले जा मेरी दुआएं ले जा ｜ Leja Meri Duayen ｜ Lata Mangeshkar Old Song ｜ Deedar ｜ Nargis ｜ Dilip Kumar.mp3" },
+      { title: "Tu Tu Tu Tara", artist: "Bol Radha Bol • Rishi & Juhi", file: "54 - Tu Tu Tu Tara Full Song ｜ Bol Radha Bol Movie Song ｜ 90's Superhit Song ｜ Rishi Kapoor, Juhi Chawla.mp3" },
+      { title: "Hue Hum Jinke Liye Barbad", artist: "Deedar • Mohammed Rafi", file: "55 - हुए हम जिनके लिए बर्बाद ｜ Hue Hum Jinke Liye Barbad ｜ Deedar Movie Song ｜ Dilip Kumar ｜ Nargis.mp3" },
+      { title: "Tere Bina Dil Lagta Nahi", artist: "Deewana Mastana • 90s Hits", file: "56 - Tere Bina Dil Lagta Nahi Full Song ｜ Alka Yagnik, Vinod Rathod, Udit Narayan ｜ Deewana Mastana.mp3" },
+      { title: "Head Ya Tail", artist: "Deewana Mastana • Govinda & Anil", file: "57 - Head Ya Tail Full Song ｜ Kavita Krishnamurthy, Udit Narayan, Vinod Rathod ｜ Deewana Mastana.mp3" },
+      { title: "Tumhi Ne Meri Zindagi Re", artist: "Naseeb (1998) • Govinda", file: "58 - Tumhi Ne Meri Zindagi Re ｜ Govinda, Mamta Kulkarni ｜ Babul Supriyo ｜ Naseeb (1998) ｜ HD Song.mp3" },
+      { title: "Kabhi Jo Bhoolna Chahun", artist: "Naseeb (1998) • Kumar Sanu", file: "59 - Kabhi Jo Bhoolna Chahun ｜ Govinda, Mamta Kulkarni ｜ Kumar Sanu ｜ Naseeb (1998) ｜ 4K Video Song.mp3" },
+      { title: "Bol Radha Bol", artist: "Bol Radha Bol • Suresh & Sadhana", file: "60 - Bol Radha Bol ｜ 90's Superhit Song ｜ Rishi Kapoor, Juhi Chawla ｜ Sadhana Sargam, Suresh Wadkar ｜ HD.mp3" },
+      { title: "Saaz E Dil Chhed De", artist: "Passport • Pradeep & Madhubala", file: "61 - साज़ ए दिल छेड़ दे ｜ Saaz E Dil Chhed De Full Song ｜ Pradeep Kumar & Madhubala Song ｜ Passport.mp3" },
+      { title: "Hungama Ho Gaya", artist: "Deewana Mastana • Govinda", file: "62 - हंगामा हो गया ｜ Hungama Ho Gaya Full Song ｜ Govinda ｜ Deewana Mastana (1997) ｜ HD Video Song.mp3" },
+      { title: "Ek Baat Poochhta Hoon", artist: "Manoj Kumar • Mukesh Classic", file: "63 - Ek Baat Poochhta Hoon ｜ Manoj Kumar & Vijaya Choudhary ｜ Usha Mangeshkar & Mukesh Hit Songs.mp3" },
+      { title: "Husn Hai Ya Koi Qayamat Hai", artist: "Saudagar • Amitabh Bachchan", file: "64 - हुस्न है या कोई कयामत है ｜ Husn Hai Ya Koi Qayamat Hai Song ｜ Amitabh Bachchan ｜ Nutan ｜ Saudagar.mp3" },
+      { title: "O Mummy Mummy", artist: "Deewana Mastana • Udit Narayan", file: "65 - O Mummy Mummy ｜ Udit Narayan ｜ Govinda, Juhi Chawla ｜ Deewana Mastana (1997) ｜ Superhit HD Song.mp3" },
+      { title: "Chanda Sitare Bindiya Tumhari", artist: "Naseeb • Udit & Alka", file: "66 - Chanda Sitare Bindiya Tumhari ｜ Udit Narayan, Alka Yagnik ｜ Govinda, Mamta Kulkarni ｜ Naseeb.mp3" },
+      { title: "Itna Hai Tumse Pyar Mujhe", artist: "Suraj • Classic Romantic", file: "67 - इतना है तुमसे प्यार मुझे ｜ Itna Hai Tumse Pyar Mujhe Full Song ｜ Classic Romantic Song ｜ Suraj.mp3" },
+      { title: "Savaiyaa Chhota Sa Saajan", artist: "Vivah Special • Duet", file: "68 - Savaiyaa Chhota Sa Saajan Song ｜ Cutest Vivah Movie Song ｜ Father Daughter Duo Song ｜ छोटा सा साजन.mp3" },
+      { title: "Main Bhookha", artist: "Bhoot Bangla • R.D. Burman", file: "69 - Main Bhookha - Horror Comedy Song ｜ R.D Burman Hit Songs ｜ Birthday Special ｜ Bhoot Bangla Songs.mp3" },
+      { title: "Deewana Dil Beqarar Tha", artist: "Bol Radha Bol • Rishi & Juhi", file: "70 - दीवाना दिल बेकरार था ｜ Deewana Dil Beqarar Tha Song ｜ Rishi Kapoor, Juhi Chawla ｜ Bol Radha Bol Song.mp3" },
+      { title: "Aaja Na Tere Bin", artist: "Bol Radha Bol • 90s Sad Song", file: "71 - Aaja Na Tere Bin Song ｜ Juhi Chawla, Rishi Kapoor ｜ Bol Radha Bol Movie Song ｜ 90s Sad Song.mp3" },
+      { title: "Kahin Se Chali Aa", artist: "Love U Mr. Kalakaar", file: "72 - कहीं से चली आ ｜ Kahin Se Chali Aa Song ｜ Love U Mr. Kalakaar ｜ Tusshar Kapoor, Amrita Rao Love Song.mp3" },
+      { title: "Main Hun Gaon Ki Gori", artist: "Bol Radha Bol • Juhi Chawla", file: "73 - Main Hun Gaon Ki Gori Song ｜ Bol Radha Bol Movie Song ｜ Juhi Chawla, Rishi Kapoor ｜ 90's Hit Song.mp3" },
+      { title: "Mohabbat Jisko Kehte Hain", artist: "Maa Beta • Hemant Kumar", file: "74 - मोहब्बत जिसको कहते हैं ｜ Mohabbat Jisko Kehte Hain Song ｜ Lata Mangeshkar ｜ Hemant Kumar ｜ Maa Beta.mp3" },
+      { title: "Aa Bhi Ja Rasiya", artist: "Phoolon Ki Sej • Vyjayanthimala", file: "75 - आ भी जा रसिया ｜ Aa Bhi Ja Rasiya Classic Song ｜ Phoolon Ki Sej ｜ Vyjantimala, Manoj Kumar & Mehmood.mp3" },
+      { title: "Sarphira Sa Hai Dil", artist: "Love U Mr. Kalakaar", file: "76 - सरफिरा सा है दिल ｜ Sarphira Sa Hai Dil Song ｜ Love U Mr. Kalakaar ｜ Bollywood Romantic Song.mp3" },
+      { title: "Woh Jab Yaad Aaye Bahut Yaad Aaye", artist: "Parasmani • Rafi & Lata", file: "77 - वो जब याद आये बहुत याद आये ｜ Woh Jab Yaad Aaye Bahut Yaad Aaye Song ｜ Classic Love Song ｜ Parasmani.mp3" },
+      { title: "Dil Chahe Kisi Se Pyar Karoon", artist: "Deewana Mastana • Juhi Chawla", file: "78 - Dil Chahe Kisi Se Pyar Karoon ｜ Deewana Mastana (1997) ｜ 90's Hits Song ｜ Juhi Chawla ｜ Govinda.mp3" },
+      { title: "Ye Gaya Wo Gaya", artist: "Deewana Mastana • Alka Yagnik", file: "79 - Ye Gaya Wo Gaya Song ｜ Anil Kapoor, Juhi Chawla ｜ Alka Yagnik Romantic Song ｜ Deewana Mastana Song.mp3" },
+      { title: "Jeenewale Muskura Ke Jee", artist: "Chhote Nawab • Helen Classic", file: "80 - जीनेवाले मुस्कुरा के जी ｜ Jeenewale Muskura Ke Jee ｜ Chhote Nawab Movie Song ｜ Helen Songs ｜ Mehmood.mp3" },
+      { title: "O Mere Pyar Aaja", artist: "Bhoot Bangla • Kishore Kumar", file: "81 - ओ मेरे प्यार आजा ｜ O Mere Pyar Aaja Full Song ｜ Tanuja & Mehmood ｜ Bhoot Bangla ｜ Classic Movie Song.mp3" },
+      { title: "Ab Mohabbat Mein Jo Pahle", artist: "Banarasi Thug • Manoj Kumar", file: "82 - अब मोहब्बत में जो पहले ｜ Ab Mohabbat Mein Jo Pahle Song ｜ Manoj Kumar, Vijaya ｜ Banarasi Thug.mp3" },
+      { title: "Kaise Dekha Hai Mujhe Ji O", artist: "Pati Patni • Mehmood & Mumtaz", file: "83 - कैसे देखा है मुझे जी ओ ｜ Kaise Dekha Hai Mujhe Ji O Full Song ｜ Mehmood, Mumtaz Songs ｜ Pati Patni.mp3" },
+      { title: "Chehre Pe Giri Zulfein", artist: "Suraj • Mohammed Rafi", file: "84 - चेहरे पे गिरी ज़ुल्‍फें ｜ Chehre Pe Giri Zulfein Full Song ｜ Rajendra Kumar ｜ Vyjayanthimala ｜ Suraj.mp3" },
+      { title: "Duniya Ne Teri Duniya Wale", artist: "Deedar • Lata Mangeshkar", file: "85 - दुनिया ने तेरी दुनिया वाले ｜ Duniya Ne Teri Duniya Wale Song ｜ Nargis Sad Song ｜ Lata Mangeshkar.mp3" },
+      { title: "Pyasi Hai Mamta Meri Aaja Re", artist: "Usha Mangeshkar Classic", file: "86 - प्यासी है ममता मेरी आजा रे ｜ Pyasi Hai Mamta Meri Aaja Re Song ｜ Usha Mangeshkar Classic Sad Song.mp3" },
+      { title: "Titli Udi Ud Jo Chali", artist: "Suraj • Sharda Classic", file: "87 - तितली उड़ी उड़ जो चली ｜ Titli Udi Ud Jo Chali Song ｜ Rajendra Kumar ｜ Vyjayanthimala Songs ｜ Suraj.mp3" },
+      { title: "Aaj Hua Mera Dil Matwala", artist: "Chhote Nawab • Mohammed Rafi", file: "88 - आज हुआ मेरा दिल मतवाला ｜ Aaj Hua Mera Dil Matwala Song ｜ Chhote Nawab Movie Song ｜ Mehmood.mp3" },
+      { title: "Khush Rahe Tu Sada", artist: "Khilona • Mohammed Rafi", file: "89 - Khush Rahe Tu Sada - Sanjeev Kumar Shatrughan Sinha & Alka - Khilona.mp3" },
+      { title: "Dekh Liya Maine Kismat Ka Tamasha", artist: "Deedar • Rafi & Lata", file: "90 - देख लिया मैंने किस्मत का तमाशा ｜ Dekh Liya Maine Kismat Ka Tamasha ｜ Deedar ｜ Nargis ｜ Dilip Kumar.mp3" },
+      { title: "Tere Mere Beech Mein", artist: "Ek Duuje Ke Liye • S.P.B.", file: "91 - Tere Mere Beech Mein ｜ Kamal Hassan & Rati Agnihotri ｜ Ek Duuje Ke Liye ｜ Sad Love Song.mp3" },
+      { title: "Khuli Khuli Zulfon Ko Baandh Bhi Lo", artist: "Banarasi Thug • Classic Duet", file: "92 - खुली खुली ज़ुल्फ़ों को बांध भी लो ｜ Khuli Khuli Zulfon Ko Baandh Bhi Lo ｜ Banarasi Thug Movie Song.mp3" },
+      { title: "Phoolon Ki Sej Title Song", artist: "Phoolon Ki Sej • Lata Classic", file: "93 - फूलों की सेज ｜ Phoolon Ki Sej Movie Title Song ｜ Vyjantimala Classic Song ｜ Lata Mangeshkar Song.mp3" },
+      { title: "Aaj Mausam Ki Masti Mein", artist: "Banarasi Thug • Madhumati", file: "94 - आज मौसम की मस्ती में ｜ Aaj Mausam Ki Masti Mein Song ｜ Banarasi Thug ｜ Manoj Kumar ｜ Madhumati.mp3" },
+      { title: "Kajre Badarwa Re", artist: "Pati Patni • Lata Mangeshkar", file: "95 - कजरे बदरवा रे ｜ Kajre Badarwa Re Song ｜ Pati Patni ｜ Lata Mangeshkar Classic song ｜ Mumtaz.mp3" },
+      { title: "Maar Dalega Dard-E-Jigar", artist: "Pati Patni • Asha Bhosle", file: "96 - Maar Dalega Dard-E-Jigar Song ｜ Asha Bhosle ｜ Classic Romantic Hindi Song ｜ Pati Patni Movie Song.mp3" },
+      { title: "Allah Jaane Main Hoon Kaun", artist: "Mehmood • Classic Comedy", file: "97 - अल्लाह जाने मैं हूँ कौन ｜ Allah Jaane Main Hoon Kaun Song ｜ Mehmood's Classic Funny Hindi Song.mp3" },
+      { title: "Dilbara Jab Tera Naam Liya", artist: "Banarasi Thug • Romantic", file: "98 - दिलबर जब तेरा ｜ Dilbara Jab Tera Naam Liya Song ｜ Classic Romantic Song ｜ Banarasi Thug Movie Song.mp3" },
+      { title: "Tu Kon Hai Mera Kehde Balam", artist: "Deedar • Shamshad Begum", file: "99 - तू कौन है मेरा कहदे बालम ｜ Tu Kon Hai Mera Kehde Balam ｜ Classic Romantic Song ｜ Deedar ｜ Nargis.mp3" },
+      { title: "Ek Sawaal Hai Tumse", artist: "Bhoot Bungla • Mehmood", file: "100 - एक सवाल है तुमसे ｜ Ek Sawaal Hai Tumse Song ｜ Mehmood ｜ Classic Peppy Dance Song ｜ Bhoot Bungla.mp3" },
+      { title: "Yaad Suhani Teri", artist: "Banarasi Thug • Manoj Kumar", file: "101 - याद सुहानी तेरी ｜ Yaad Suhani Teri Song ｜ Manoj Kumar & Vijaya Choudhary ｜ Banarasi Thug Movie Song.mp3" },
+      { title: "Koi Jab Raah Na Paye", artist: "Dosti • Mohammed Rafi Classic", file: "102 - कोई जब राह ना पाए ｜ Classic Superhit Song Koi Jab Raah Na Paye ｜ Dosti Movie Song ｜ Sudhir Kumar.mp3" },
+      { title: "Naseeb Dar Pe Tere Song", artist: "Deedar • Mohammed Rafi", file: "103 - नसीब दर पे तेरे आज़माने आया हूँ ｜ Naseeb Dar Pe Tere Song ｜ Mohammed Rafi ｜ Nargis ｜ Dilip Kumar.mp3" },
+      { title: "Tauba Tauba Ho Tauba Meri Jaan", artist: "Passport • Asha Bhosle & Helen", file: "104 - Tauba Tauba Ho Tauba Meri Jaan ｜ K.N.Singh ｜ Helen & Nazir Hussain ｜ Passport Movie Song.mp3" },
+      { title: "Meine Kaha Tumse", artist: "Maa Beta • Mukesh & Lata", file: "105 - Meine Kaha Tumse Song ｜ Maa Beta Movie Song ｜ Lata Mangeshkar & Mukesh Classic Duet ｜ Manoj Kumar.mp3" },
+      { title: "Nazar Ka Jhuk Jana", artist: "Passport • Romantic Classic", file: "106 - नज़र का झुक जाना ｜ Nazar Ka Jhuk Jana Song ｜ K.N.Singh & Sarita ｜ Passport Movie Song ｜ Classic Hits.mp3" },
+      { title: "Chaman Mein Rakhe Veerana", artist: "Deedar • Dilip Kumar Classic", file: "107 - Chaman Mein Rakhe Veerana ｜ Ashok Kumar ｜ Nargis Classic Song ｜ Dilip Kumar ｜ Deedar Movie Songs.mp3" },
+      { title: "Aam Chhum Taam Chhum", artist: "Chhote Nawab • Rafi & Mehmood", file: "108 - Aam Chhum Taam Chhum Song ｜ Mehmood Funny Songs ｜ Mohammed Rafi Hits ｜ Chhote Nawab Movie Song.mp3" },
+      { title: "Woh Kaunsi Mushkil Hai", artist: "Maa Beta • Mohammed Rafi", file: "109 - Woh Kaunsi Mushkil Hai Song ｜ Mohammed Rafi ｜ Manoj Kumar, Nirupa Roy ｜ Maa Beta (1962) ｜ Video Song.mp3" },
+      { title: "Chura Ke Dil Ban Rahe Ho Bhole", artist: "Mehmood & Ameeta Classic", file: "110 - चुरा के दिल बन रहे हो भोले ｜ Chura Ke Dil Ban Rahe Ho Bhole Classic Song ｜ Mehmood & Ameeta Song.mp3" },
+      { title: "Jaago Sone Walo", artist: "Bhoot Bungla • Kishore Kumar", file: "111 - जागो सोने वालों ｜ Jaago Sone Walo Song ｜ Mehmood Superhit Song ｜ Bhoot Bungla Movie Song.mp3" },
+      { title: "Sun Le Dastan Yun Na Sata", artist: "Passport • Subir Sen Classic", file: "112 - सुन ले दास्ताँ यूँ ना सता ｜ Sun Le Dastan Yun Na Sata Song ｜ Passport ｜ Madhubala ｜ Subir Sen.mp3" },
+      { title: "Chhan Chhan Payal Chhanke", artist: "Maa Beta • Lata & Manna Dey", file: "113 - छन छन पायल छनके ｜ Chhan Chhan Payal Chhanke Song ｜ Lata Mangeshkar & Manna Dey Duet ｜ Maa Beta Song.mp3" },
+      { title: "Bachpan Ke Din Bhula Na Dena", artist: "Deedar • Shamshad Begum", file: "114 - बचपन के दिन भुला न देना ｜ Bachpan Ke Din Bhula Na Dena Song ｜ Female Version ｜ Deedar Movie Song.mp3" },
+      { title: "Ghar Aaja Ghir Aaye Badra", artist: "Chhote Nawab • Lata Mangeshkar", file: "115 - घर आजा घिर आये बदरा ｜ Ghar Aaja Ghir Aaye Badra Full Song ｜ Mehmood ｜ Lata Mangeshkar ｜ Chhote Nawab.mp3" },
+      { title: "Man Mera Udta Jaye", artist: "Maa Beta • Lata Mangeshkar", file: "117 - मन मेरा उड़ता जाए ｜ Man Mera Udta Jaye Song ｜ Maa Beta Movie Song ｜ Manoj Kumar ｜ Lata Mangeshkar.mp3" },
+      { title: "Jaa Raha Hai Kyon Deewane", artist: "Passport • Asha Bhosle & Helen", file: "118 - जा रहा है क्यों दीवाने ｜ Jaa Raha Hai Kyon Deewane Song ｜ Pradeep Kumar, Helen ｜ Passport Movie Song.mp3" },
+      { title: "Lage Nahi Mora Jiya", artist: "Banarasi Thug • Classic Duet", file: "119 - लागे नहीं मोरा जिया ｜ Lage Nahi Mora Jiya Song ｜ Manoj Kumar & Vijaya Choudhary ｜ Banarasi Thug Song.mp3" },
+      { title: "Chali Re Chali Re Gori", artist: "Mr. X In Bombay • Kishore Kumar", file: "120 - चली रे चली रे ｜ Chali Re Chali Re Gori Song ｜ Kumkum & Kishore Kumar ｜ Mr. X In Bombay Movie Song.mp3" },
+      { title: "Khoobsurat Haseena", artist: "Mr. X In Bombay • Kishore Kumar", file: "121 - खूबसूरत हसीना ｜ Khoobsurat Haseena Song ｜ Kishore Kumar & Kumkum ｜ Mr X In Bombay Movie Song.mp3" },
+      { title: "Taron Ki Ankhon Ka Tara Tu", artist: "Phoolon Ki Sej • Classic", file: "122 - तारों की आँखों का तारा तू ｜ Taron Ki Ankhon Ka ｜ Vyjantimala, Manoj Kumar, Mehmood ｜ Phoolon Ki Sej.mp3" },
+      { title: "Aayega Koi Hamraaz", artist: "Phoolon Ki Sej • Vyjayanthimala", file: "124 - आएगा कोई हमराज ｜ Aayega Koi Hamraaz Song ｜ Vyjayanthimala ｜ Phoolon Ki Sej Movie Song.mp3" },
+      { title: "Pyar Ko Madhur Madhur", artist: "Phoolon Ki Sej • Mehmood & Shobha", file: "125 - प्यार को मधुर मधुर ｜ Pyar Ko Madhur Madhur Song ｜ Mehmood & Shobha Khote ｜ Phoolon Ki Sej Movie Song.mp3" }
     ];
 
     let currentIdx = 0;
@@ -675,6 +752,7 @@
     const tCur = document.getElementById('t-cur');
     const tDur = document.getElementById('t-dur');
     const stationStatus = document.getElementById('station-status');
+    const drawerCountTitle = document.getElementById('drawer-count-title');
 
     function loadSong(idx) {
       currentIdx = idx;
@@ -762,6 +840,7 @@
     function renderPlaylistUI() {
       const container = document.getElementById('song-list-scroll');
       container.innerHTML = '';
+      drawerCountTitle.innerText = `📻 Radio Playlist (${playlist.length} Tracks)`;
 
       playlist.forEach((song, idx) => {
         const item = document.createElement('div');
@@ -806,28 +885,28 @@
       window.speechSynthesis.speak(utterance);
     }
 
-    // Authentic Indian Truck Multi-Tone Air Horn (Iconic Naagin / Desi Highway Tune)
+    // Iconic Desi Truck Musical Horn (Multi-tone Highway Tune)
     function blowTruckHorn() {
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
       if (!AudioCtx) return;
       const ctx = new AudioCtx();
 
       const hornTune = [
-        { f: 440, d: 0.12, p: 0.04 }, // A4
-        { f: 494, d: 0.12, p: 0.04 }, // B4
-        { f: 523, d: 0.14, p: 0.04 }, // C5
-        { f: 494, d: 0.12, p: 0.04 }, // B4
-        { f: 440, d: 0.14, p: 0.05 }, // A4
-        { f: 392, d: 0.14, p: 0.04 }, // G4
-        { f: 440, d: 0.35, p: 0.08 }, // A4
-        { f: 523, d: 0.16, p: 0.04 }, // C5
-        { f: 587, d: 0.45, p: 0.00 }  // D5
+        { f: 440, d: 0.12, p: 0.04 },
+        { f: 494, d: 0.12, p: 0.04 },
+        { f: 523, d: 0.14, p: 0.04 },
+        { f: 494, d: 0.12, p: 0.04 },
+        { f: 440, d: 0.14, p: 0.05 },
+        { f: 392, d: 0.14, p: 0.04 },
+        { f: 440, d: 0.35, p: 0.08 },
+        { f: 523, d: 0.16, p: 0.04 },
+        { f: 587, d: 0.45, p: 0.00 }
       ];
 
       let startTime = ctx.currentTime + 0.02;
 
       hornTune.forEach((note) => {
-        const pipes = [note.f, note.f * 1.5]; // Dual Chime harmonics
+        const pipes = [note.f, note.f * 1.5];
 
         pipes.forEach((freq) => {
           const osc = ctx.createOscillator();
